@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		E24C48D02A96A14E00B261A9 /* SetCardGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48CF2A96A14E00B261A9 /* SetCardGameApp.swift */; };
-		E24C48D22A96A14E00B261A9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48D12A96A14E00B261A9 /* ContentView.swift */; };
+		E24C48D22A96A14E00B261A9 /* SetCardGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48D12A96A14E00B261A9 /* SetCardGameView.swift */; };
 		E24C48D42A96A15000B261A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E24C48D32A96A15000B261A9 /* Assets.xcassets */; };
 		E24C48D72A96A15000B261A9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E24C48D62A96A15000B261A9 /* Preview Assets.xcassets */; };
+		E24C48DE2A96A40500B261A9 /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48DD2A96A40500B261A9 /* AspectVGrid.swift */; };
+		E24C48E02A96A71600B261A9 /* SetCardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48DF2A96A71600B261A9 /* SetCardGame.swift */; };
+		E24C48E22A96A98F00B261A9 /* SetCardGameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E24C48CC2A96A14E00B261A9 /* SetCardGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetCardGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24C48CF2A96A14E00B261A9 /* SetCardGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardGameApp.swift; sourceTree = "<group>"; };
-		E24C48D12A96A14E00B261A9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E24C48D12A96A14E00B261A9 /* SetCardGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardGameView.swift; sourceTree = "<group>"; };
 		E24C48D32A96A15000B261A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E24C48D62A96A15000B261A9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E24C48DD2A96A40500B261A9 /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
+		E24C48DF2A96A71600B261A9 /* SetCardGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardGame.swift; sourceTree = "<group>"; };
+		E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardGameManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +58,10 @@
 			isa = PBXGroup;
 			children = (
 				E24C48CF2A96A14E00B261A9 /* SetCardGameApp.swift */,
-				E24C48D12A96A14E00B261A9 /* ContentView.swift */,
+				E24C48D12A96A14E00B261A9 /* SetCardGameView.swift */,
+				E24C48DF2A96A71600B261A9 /* SetCardGame.swift */,
+				E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */,
+				E24C48DD2A96A40500B261A9 /* AspectVGrid.swift */,
 				E24C48D32A96A15000B261A9 /* Assets.xcassets */,
 				E24C48D52A96A15000B261A9 /* Preview Content */,
 			);
@@ -137,8 +146,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E24C48D22A96A14E00B261A9 /* ContentView.swift in Sources */,
+				E24C48E02A96A71600B261A9 /* SetCardGame.swift in Sources */,
+				E24C48D22A96A14E00B261A9 /* SetCardGameView.swift in Sources */,
 				E24C48D02A96A14E00B261A9 /* SetCardGameApp.swift in Sources */,
+				E24C48DE2A96A40500B261A9 /* AspectVGrid.swift in Sources */,
+				E24C48E22A96A98F00B261A9 /* SetCardGameManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
