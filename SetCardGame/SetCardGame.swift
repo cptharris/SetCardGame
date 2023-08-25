@@ -9,6 +9,7 @@ import Foundation
 
 struct SetCardGame {
 	private(set) var cards = [Card]()
+	private(set) var dealtCards = [Card]()
 	
 	init() {
 		var id = 0
@@ -23,18 +24,18 @@ struct SetCardGame {
 			}
 		}
 		
-		cards.shuffle()
-		dealThree()
-		dealThree()
-		dealThree()
-		dealThree()
+//		cards.shuffle()
+		for _ in 0..<4 {
+			dealThree()
+		}
 	}
 	
 	mutating func dealThree() {
-		if let firstIndex = cards.firstIndex(where: { !$0.onBoard}) {
-			for index in firstIndex..<(firstIndex + 3) {
-				cards[index].onBoard = true
-				print(cards[index].color)
+		for _ in 0..<3 {
+			if cards.count > 0 {
+				dealtCards.insert(cards.removeFirst(), at: 0)
+			} else {
+				break
 			}
 		}
 	}
@@ -46,7 +47,7 @@ struct SetCardGame {
 
 struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 	var debugDescription: String {
-		return "[\(id): \(color) \(number) \(shape) \(shading) \(onBoard ? "on board" : "not on board")]"
+		return "[\(id): \(color) \(number) \(shape) \(shading)]"
 	}
 	
 	var id: Int
@@ -54,7 +55,6 @@ struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 	let number: Number
 	let shape: Shape
 	let shading: Shading
-	var onBoard: Bool = false
 	
 	init(_ color: Colour, _ number: Number, _ shape: Shape, _ shading: Shading, id: Int) {
 		self.color = color
