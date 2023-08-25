@@ -24,7 +24,7 @@ struct SetCardGame {
 			}
 		}
 		
-//		cards.shuffle()
+		cards.shuffle()
 		for _ in 0..<4 {
 			dealThree()
 		}

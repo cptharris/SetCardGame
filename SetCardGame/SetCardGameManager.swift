@@ -10,10 +10,6 @@ import SwiftUI
 
 class SetCardGameManager: ObservableObject {
 	@Published private var game = SetCardGame()
-	private(set) var cardSize = CGSize(width: 70, height: 100)
-	func setCardWidth(_ width: CGFloat) {
-		cardSize = CGSize(width: width, height: width * 2/3)
-	}
 	
 	var getOnBoardCards: [Card] {
 		game.dealtCards
@@ -49,11 +45,11 @@ extension Card {
 		let base = RoundedRectangle(cornerRadius: 10)
 		switch self.shading {
 		case .open:
-			Group {base.strokeBorder(lineWidth: 5).foregroundColor(getColor())}
+			base.strokeBorder(lineWidth: 5).foregroundColor(getColor())
 		case .striped:
-			Group {base.strokeBorder(lineWidth: 5).foregroundColor(getColor()).stripeBackground(color: getColor())}
+			base.strokeBorder(lineWidth: 5).foregroundColor(getColor()).stripeBackground(color: getColor())
 		case .solid:
-			Group {base.fill(getColor())}
+			base.fill(getColor())
 		}
 	}
 }

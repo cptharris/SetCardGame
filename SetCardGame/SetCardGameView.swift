@@ -25,15 +25,15 @@ struct SetCardGameView: View {
 	
 	private var cardsView: some View {
 		GeometryReader { geometry in
-			let _ = gameKeeper.setCardWidth(max( gridItemWidthThatFits(
+			let gridItemWidth = max(gridItemWidthThatFits(
 				count: gameKeeper.getOnBoardCards.count,
 				size: geometry.size,
-				atAspectRatio: 2/3), 70))
+				atAspectRatio: 2/3), 70)
 			
 			ScrollView {
-				LazyVGrid(columns: [GridItem(.adaptive(minimum: gameKeeper.cardSize.width), spacing: 0)], spacing: 0) {
+				LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemWidth), spacing: 0)], spacing: 0) {
 					ForEach(gameKeeper.getOnBoardCards) { card in
-						CardView(card, gameKeeper)
+						CardView(card: card)
 							.aspectRatio(2/3, contentMode: .fit)
 							.padding(2)
 					}
@@ -61,22 +61,19 @@ struct SetCardGameView: View {
 
 private struct CardView: View {
 	let card: Card
-	let gameKeeper: SetCardGameManager
-	init(_ card: Card, _ gameKeeper: SetCardGameManager) {
-		self.card = card
-		self.gameKeeper = gameKeeper
-	}
 	
 	var body: some View {
-		ZStack {
-			card.getCardWithShading()
-			let base = card.getShape()
-				.frame(width: (gameKeeper.cardSize.width) * 9 / 12,
-					   height: (gameKeeper.cardSize.height / 3))
-			VStack {
-				base
-				base.isHidden(card.number.rawValue > 1, remove: true)
-				base.isHidden(card.number.rawValue > 2, remove: true)
+		GeometryReader {geometry in
+			ZStack {
+				card.getCardWithShading()
+				let base = card.getShape()
+					.frame(width: (geometry.size.width) * 7 / 12,
+						   height: (geometry.size.width * 2/3) / 3)
+				VStack {
+					ForEach(0..<card.number.rawValue, id: \.self) {_ in
+						base
+					}
+				}
 			}
 		}
 	}
@@ -99,7 +96,7 @@ extension View {
 				ForEach(0..<6) { number in
 					Color.clear
 					color.frame(width: 3)
-					if number == 6 - 1 { // last
+					if number == 6 - 1 {
 						Color.clear
 					}
 				}
