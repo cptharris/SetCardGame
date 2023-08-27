@@ -22,6 +22,10 @@ class SetCardGameManager: ObservableObject {
 	var remainingCards: Int {
 		game.cards.count
 	}
+	
+	func choose(_ card: Card) {
+		game.choose(card)
+	}
 }
 
 extension Card {
@@ -43,13 +47,31 @@ extension Card {
 	
 	@ViewBuilder func getCardWithShading() -> some View {
 		let base = RoundedRectangle(cornerRadius: 10)
+		let lineWidth: CGFloat = 5
 		switch self.shading {
 		case .open:
-			base.strokeBorder(lineWidth: 5).foregroundColor(getColor())
+			base.strokeBorder(lineWidth: lineWidth)
+				.foregroundColor(strokeColor())
 		case .striped:
-			base.strokeBorder(lineWidth: 5).foregroundColor(getColor()).stripeBackground(color: getColor())
+			base.strokeBorder(lineWidth: lineWidth)
+				.foregroundColor(strokeColor())
+				.stripeBackground(color: .black, numStripes: 20)
 		case .solid:
-			base.fill(getColor())
+			base
+			base.strokeBorder(lineWidth: lineWidth)
+				.foregroundColor(strokeColor())
+		}
+	}
+	
+	func strokeColor() -> Color {
+		if isSelected {
+			return Color.yellow
+		} else if isMatched == .yes {
+			return Color.green
+		} else if isMatched == .no {
+			return Color.red
+		} else {
+			return Color.black
 		}
 	}
 }

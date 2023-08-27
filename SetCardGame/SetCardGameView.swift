@@ -18,7 +18,7 @@ struct SetCardGameView: View {
 			Button("Deal 3") {
 				gameKeeper.dealThree()
 			}
-			.disabled(gameKeeper.remainingCards == 0)
+			.isHidden(gameKeeper.remainingCards == 0, remove: true)
 		}
 		.padding(5)
 	}
@@ -36,6 +36,9 @@ struct SetCardGameView: View {
 						CardView(card: card)
 							.aspectRatio(2/3, contentMode: .fit)
 							.padding(2)
+							.onTapGesture {
+								gameKeeper.choose(card)
+							}
 					}
 				}
 			}
@@ -66,12 +69,13 @@ private struct CardView: View {
 		GeometryReader {geometry in
 			ZStack {
 				card.getCardWithShading()
-				let base = card.getShape()
-					.frame(width: (geometry.size.width) * 7 / 12,
-						   height: (geometry.size.width * 2/3) / 3)
+				let shapes = card.getShape()
+					.aspectRatio(2, contentMode: .fit)
+					.frame(height: (geometry.size.width * 2/3) / 3)
+					.foregroundColor(card.getColor())
 				VStack {
 					ForEach(0..<card.number.rawValue, id: \.self) {_ in
-						base
+						shapes
 					}
 				}
 			}
@@ -90,13 +94,13 @@ extension View {
 		}
 	}
 	
-	func stripeBackground(color: Color) -> some View {
+	func stripeBackground(color: Color, numStripes: Int) -> some View {
 		self.background() {
 			HStack(spacing: 0) {
-				ForEach(0..<6) { number in
+				ForEach(0..<numStripes, id: \.self) { number in
 					Color.clear
-					color.frame(width: 3)
-					if number == 6 - 1 {
+					color.frame(width: 1)
+					if number == numStripes - 1 {
 						Color.clear
 					}
 				}
