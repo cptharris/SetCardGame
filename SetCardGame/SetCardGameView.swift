@@ -15,12 +15,38 @@ struct SetCardGameView: View {
 			cardsView
 				.animation(.default, value: gameKeeper.getOnBoardCards)
 			
-			Button("Deal 3") {
-				gameKeeper.dealThree()
-			}
-			.isHidden(gameKeeper.remainingCards == 0, remove: true)
+			bottomPanel
+				.padding(5)
 		}
 		.padding(5)
+	}
+	
+	private var bottomPanel: some View {
+		HStack {
+			Group {
+				Button("Deal 3") {
+					gameKeeper.dealThree()
+				}
+				Spacer()
+			}.disabled(gameKeeper.remainingCards == 0)
+			Group {
+				Button("New Game") {
+					gameKeeper.newGame()
+				}
+				Spacer()
+			}
+			Group {
+				Button("Hint") {
+					gameKeeper.findMatch()
+				}
+				Spacer()
+			}
+			Group {
+				Button("Shuffle") {
+					gameKeeper.shuffle()
+				}
+			}
+		}
 	}
 	
 	private var cardsView: some View {

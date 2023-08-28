@@ -67,41 +67,71 @@ struct SetCardGame {
 	
 	mutating func choose(_ card: Card) {
 		// if three are not matched, unselect the three
-		if dealtCards.filter({$0.isMatched == .no}).count == 3 {
-			dealtCards.indices.forEach({dealtCards[$0].isMatched = .unknown})
+		if dealtCards.filter({$0.state == .nomatch}).count == 3 {
+			dealtCards.indices.forEach({dealtCards[$0].state = .noselect})
 			// if three are matched, remove the three
-		} else if dealtCards.filter({$0.isMatched == .yes}).count == 3 {
-			dealtCards.removeAll(where: {$0.isMatched == .yes})
-			dealThree()
+		} else {
+			confirmMatch()
 		}
 		
 		select(card)
 		
 		// determine matched cards if three cards are selected
-		let selectedIndices = dealtCards.indices.filter({dealtCards[$0].isSelected})
+		let selectedIndices = dealtCards.indices.filter({dealtCards[$0].state == .select})
 		if selectedIndices.count == 3 {
 			let matchResults = match(dealtCards[selectedIndices[0]], dealtCards[selectedIndices[1]], dealtCards[selectedIndices[2]])
 			for index in selectedIndices {
-				dealtCards[index].isMatched = matchResults ? .yes : .no
-				dealtCards[index].isSelected = false
+				dealtCards[index].state = matchResults ? .match : .nomatch
 			}
 		}
 	}
 	
 	mutating private func select(_ card: Card) {
 		if let chosenIndex = dealtCards.firstIndex(where: {$0.id == card.id}) {
-			if dealtCards[chosenIndex].isSelected {
-				dealtCards[chosenIndex].isSelected = false
+			if dealtCards[chosenIndex].state == .select {
+				dealtCards[chosenIndex].state = .noselect
 			} else {
-				dealtCards[chosenIndex].isSelected = true
+				dealtCards[chosenIndex].state = .select
 			}
 		}
+	}
+	
+	mutating func confirmMatch(deal: Bool = true) {
+		if dealtCards.filter({$0.state == .match}).count == 3 {
+			dealtCards.removeAll(where: {$0.state == .match})
+			if deal {
+				dealThree()
+			}
+		}
+	}
+	
+	mutating func findMatch() {
+		for index in dealtCards.indices {
+			dealtCards[index].state = .noselect
+		}
+		
+		for index1 in 0..<(dealtCards.count - 2) {
+			for index2 in (index1 + 1)..<(dealtCards.count - 1) {
+				for index3 in (index2 + 1)..<(dealtCards.count) {
+					if match(dealtCards[index1], dealtCards[index2], dealtCards[index3]) {
+						dealtCards[index1].state = .suggestion
+						dealtCards[index2].state = .suggestion
+						dealtCards[index3].state = .suggestion
+						return
+					}
+				}
+			}
+		}
+	}
+	
+	mutating func shuffle() {
+		dealtCards.shuffle()
 	}
 }
 
 struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 	var debugDescription: String {
-		return "[\(id): \(color) \(number) \(shape) \(shading) \(isSelected ? "" : "un")selected]"
+		return "[\(id): \(color) \(number) \(shape) \(shading) \(state)]"
 	}
 	
 	var id: Int
@@ -109,8 +139,7 @@ struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 	let number: Number
 	let shape: Shape
 	let shading: Shading
-	var isSelected: Bool = false
-	var isMatched: Matched = .unknown
+	var state: State = .noselect
 	
 	init(_ color: Colour, _ number: Number, _ shape: Shape, _ shading: Shading, id: Int) {
 		self.color = color
@@ -118,6 +147,10 @@ struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 		self.shape = shape
 		self.shading = shading
 		self.id = id
+	}
+	
+	enum State {
+		case match, nomatch, select, noselect, suggestion
 	}
 	
 	enum Matched {

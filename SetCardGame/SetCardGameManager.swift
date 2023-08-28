@@ -16,6 +16,7 @@ class SetCardGameManager: ObservableObject {
 	}
 	
 	func dealThree() {
+		game.confirmMatch(deal: false)
 		game.dealThree()
 	}
 	
@@ -25,6 +26,19 @@ class SetCardGameManager: ObservableObject {
 	
 	func choose(_ card: Card) {
 		game.choose(card)
+	}
+	
+	func newGame() {
+		game = SetCardGame()
+	}
+	
+	func findMatch() {
+		game.confirmMatch()
+		game.findMatch()
+	}
+	
+	func shuffle() {
+		game.shuffle()
 	}
 }
 
@@ -64,14 +78,12 @@ extension Card {
 	}
 	
 	func strokeColor() -> Color {
-		if isSelected {
-			return Color.yellow
-		} else if isMatched == .yes {
-			return Color.green
-		} else if isMatched == .no {
-			return Color.red
-		} else {
-			return Color.black
+		switch state {
+		case .match: return Color.green
+		case .nomatch: return Color.red
+		case .select: return Color.yellow
+		case .suggestion: return Color.blue
+		default: return Color.black
 		}
 	}
 }
