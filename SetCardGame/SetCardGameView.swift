@@ -23,28 +23,30 @@ struct SetCardGameView: View {
 	
 	private var bottomPanel: some View {
 		HStack {
-			Group {
-				Button("Deal 3") {
-					gameKeeper.dealThree()
-				}
-				Spacer()
+			Button("Deal 3") {
+				gameKeeper.dealThree()
 			}.disabled(gameKeeper.remainingCards == 0)
-			Group {
-				Button("New Game") {
+			Spacer()
+			Menu {
+				Section {
+					Button {
+						gameKeeper.findMatch()
+					} label: {
+						Label("Hint", systemImage: "questionmark.circle")
+					}
+					Button {
+						gameKeeper.shuffle()
+					} label: {
+						Label("Shuffle", systemImage: "shuffle")
+					}
+				}
+				Button {
 					gameKeeper.newGame()
+				} label: {
+					Label("New Game", systemImage: "play.square.stack")
 				}
-				Spacer()
-			}
-			Group {
-				Button("Hint") {
-					gameKeeper.findMatch()
-				}
-				Spacer()
-			}
-			Group {
-				Button("Shuffle") {
-					gameKeeper.shuffle()
-				}
+			} label: {
+				Label("", systemImage: "square.and.pencil")
 			}
 		}
 	}
