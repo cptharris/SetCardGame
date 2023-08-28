@@ -13,10 +13,10 @@ struct SetCardGame {
 	
 	init() {
 		var id = 0
-		for color in Card.Colour.allCases {
-			for number in Card.Number.allCases {
-				for shape in Card.Shape.allCases {
-					for shading in Card.Shading.allCases {
+		for color in Card.Feature.allCases {
+			for number in Card.Feature.allCases {
+				for shape in Card.Feature.allCases {
+					for shading in Card.Feature.allCases {
 						cards.append(Card(color, number, shape, shading, id: id))
 						id += 1
 					}
@@ -131,17 +131,17 @@ struct SetCardGame {
 
 struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 	var debugDescription: String {
-		return "[\(id): \(color) \(number) \(shape) \(shading) \(state)]"
+		return "[\(id): color \(color) number \(number) shape \(shape) shading \(shading) \(state)]"
 	}
 	
 	var id: Int
-	let color: Colour
-	let number: Number
-	let shape: Shape
-	let shading: Shading
+	let color: Feature
+	let number: Feature
+	let shape: Feature
+	let shading: Feature
 	var state: State = .noselect
 	
-	init(_ color: Colour, _ number: Number, _ shape: Shape, _ shading: Shading, id: Int) {
+	init(_ color: Feature, _ number: Feature, _ shape: Feature, _ shading: Feature, id: Int) {
 		self.color = color
 		self.number = number
 		self.shape = shape
@@ -153,23 +153,7 @@ struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
 		case match, nomatch, select, noselect, suggestion
 	}
 	
-	enum Matched {
-		case yes, no, unknown
-	}
-	
-	enum Colour: CaseIterable {
-		case first, second, third
-	}
-	
-	enum Number: Int, CaseIterable {
+	enum Feature: Int, CaseIterable {
 		case one = 1, two = 2, three = 3
-	}
-	
-	enum Shape: CaseIterable {
-		case diamond, squiggle, oval
-	}
-	
-	enum Shading: CaseIterable {
-		case open, striped, solid
 	}
 }

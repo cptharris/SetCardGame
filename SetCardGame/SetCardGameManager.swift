@@ -45,17 +45,17 @@ class SetCardGameManager: ObservableObject {
 extension Card {
 	func getColor() -> Color {
 		switch self.color {
-		case .first: return Color.red
-		case .second: return Color.green
-		case .third: return Color.purple
+		case .one: return Color.red
+		case .two: return Color.green
+		case .three: return Color.purple
 		}
 	}
 	
 	@ViewBuilder func getShape() -> some View {
 		switch self.shape {
-		case .diamond: DiamondShape()
-		case .squiggle: Rectangle()
-		case .oval: Ellipse()
+		case .one: DiamondShape()
+		case .two: Rectangle()
+		case .three: Ellipse()
 		}
 	}
 	
@@ -63,14 +63,14 @@ extension Card {
 		let base = RoundedRectangle(cornerRadius: 10)
 		let lineWidth: CGFloat = 5
 		switch self.shading {
-		case .open:
+		case .one:
 			base.strokeBorder(lineWidth: lineWidth)
 				.foregroundColor(strokeColor())
-		case .striped:
+		case .two:
 			base.strokeBorder(lineWidth: lineWidth)
 				.foregroundColor(strokeColor())
 				.stripeBackground(color: .black, numStripes: 20)
-		case .solid:
+		case .three:
 			base
 			base.strokeBorder(lineWidth: lineWidth)
 				.foregroundColor(strokeColor())
