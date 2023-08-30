@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  SetCardGame
 //
-//  Created by Caleb Harris on 8/23/23.
+//  Created by Captain Harris on 8/23/23.
 //
 
 import SwiftUI
@@ -10,10 +10,11 @@ import SwiftUI
 struct SetCardGameView: View {
 	@ObservedObject var gameKeeper = SetCardGameManager()
 	
+	@Namespace private var cardNamespace
+	
 	var body: some View {
 		VStack(spacing: 0) {
-			cardsView
-				.animation(.default, value: gameKeeper.getOnBoardCards)
+			cardView
 			
 			bottomPanel
 				.padding(5)
@@ -23,49 +24,86 @@ struct SetCardGameView: View {
 	
 	private var bottomPanel: some View {
 		HStack {
-			Button("Deal 3") {
-				gameKeeper.dealThree()
-			}.disabled(gameKeeper.remainingCards == 0)
+			cardStackView(cardSet: gameKeeper.deckCards, isFaceUp: false)
+				.overlay {
+					HStack(spacing: 2) {
+						Text("S").foregroundColor(.red)
+						Text("E").foregroundColor(.green)
+						Text("T").foregroundColor(.blue)
+					}.rotationEffect(.degrees(90)).font(.title)
+				}
+				.onTapGesture {
+					withAnimation {
+						gameKeeper.dealThree()
+					}
+				}
 			Spacer()
-			Menu {
-				Section {
-					Button {
-						gameKeeper.findMatch()
-					} label: {
-						Label("Hint", systemImage: "questionmark.circle")
-					}
-					Button {
-						gameKeeper.shuffle()
-					} label: {
-						Label("Shuffle", systemImage: "shuffle")
-					}
-				}
-				Button {
-					gameKeeper.newGame()
-				} label: {
-					Label("New Game", systemImage: "play.square.stack")
-				}
-			} label: {
-				Label("", systemImage: "square.and.pencil")
-			}
+			gameMenu
+			Spacer()
+			cardStackView(cardSet: gameKeeper.disCards, isFaceUp: true)
 		}
 	}
 	
-	private var cardsView: some View {
+	private var gameMenu: some View {
+		Menu {
+			Section {
+				Button {
+					gameKeeper.hint()
+				} label: {
+					Label("Hint", systemImage: "questionmark.circle")
+				}
+				Button {
+					withAnimation {
+						gameKeeper.shuffle()
+					}
+				} label: {
+					Label("Shuffle", systemImage: "shuffle")
+				}
+			}
+			Button {
+				withAnimation {
+					gameKeeper.newGame()
+				}
+			} label: {
+				Label("New Game", systemImage: "play.square.stack")
+			}
+		} label: {
+			Label("", systemImage: "square.and.pencil")
+		}
+	}
+	
+	private func CardViewEffect(_ card: Card, isFaceUp: Bool = true) -> some View {
+		CardView(card, isFaceUp: isFaceUp)
+			.matchedGeometryEffect(id: card.id, in: cardNamespace)
+			.transition(.asymmetric(insertion: .identity, removal: .identity))
+	}
+	
+	private func cardStackView(cardSet: [Card], isFaceUp: Bool) -> some View {
+		ZStack {
+			ForEach(cardSet) { card in
+				CardViewEffect(card, isFaceUp: isFaceUp)
+			}
+		}
+		.frame(width: Constants.miniCardWidth, height: Constants.miniCardWidth / Constants.cardAspectRatio)
+	}
+	
+	/// Draw all the dealt cards
+	private var cardView: some View {
 		GeometryReader { geometry in
 			let gridItemWidth = max(gridItemWidthThatFits(
-				count: gameKeeper.getOnBoardCards.count,
+				count: gameKeeper.dealtCards.count,
 				size: geometry.size,
-				atAspectRatio: 2/3), 70)
+				atAspectRatio: Constants.cardAspectRatio), 70)
 			
 			ScrollView {
 				LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemWidth), spacing: 0)], spacing: 0) {
-					ForEach(gameKeeper.getOnBoardCards) { card in
-						CardView(card: card)
-							.aspectRatio(2/3, contentMode: .fit)
+					ForEach(gameKeeper.dealtCards) { card in
+						CardViewEffect(card)
 							.padding(2)
 							.onTapGesture {
-								gameKeeper.choose(card)
+								withAnimation {
+									gameKeeper.choose(card)
+								}
 							}
 					}
 				}
@@ -88,66 +126,11 @@ struct SetCardGameView: View {
 		} while columnCount < count
 		return min(size.width / count, size.height * aspectRatio).rounded(.down)
 	}
-}
-
-private struct CardView: View {
-	let card: Card
 	
-	var body: some View {
-		GeometryReader {geometry in
-			ZStack {
-				card.getCardWithShading()
-				let shapes = card.getShape()
-					.aspectRatio(2, contentMode: .fit)
-					.frame(height: (geometry.size.width * 2/3) / 3)
-					.foregroundColor(card.getColor())
-				VStack {
-					ForEach(0..<card.number.rawValue, id: \.self) {_ in
-						shapes
-					}
-				}
-			}
-		}
-	}
-}
-
-extension View {
-	@ViewBuilder func isHidden(_ toHide: Bool, remove: Bool = false) -> some View {
-		if toHide {
-			if !remove {
-				self.hidden()
-			}
-		} else {
-			self
-		}
-	}
-	
-	func stripeBackground(color: Color, numStripes: Int) -> some View {
-		self.background() {
-			HStack(spacing: 0) {
-				ForEach(0..<numStripes, id: \.self) { number in
-					Color.clear
-					color.frame(width: 1)
-					if number == numStripes - 1 {
-						Color.clear
-					}
-				}
-			}
-		}
-	}
-}
-
-struct DiamondShape: Shape {
-	func path(in rect: CGRect) -> Path {
-		var path = Path()
-		path.addLines([
-			CGPoint(x: 0, y: rect.height / 2),
-			CGPoint(x: rect.width / 2, y: 0),
-			CGPoint(x: rect.width, y: rect.height / 2),
-			CGPoint(x: rect.width / 2, y: rect.height),
-			CGPoint(x: 0, y: rect.height / 2)
-		])
-		return path
+	private struct Constants {
+		static let cardAspectRatio: CGFloat = 2/3
+		static let shapeAspectRatio: CGFloat = 2
+		static let miniCardWidth: CGFloat = 60
 	}
 }
 

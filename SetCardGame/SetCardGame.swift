@@ -2,14 +2,15 @@
 //  SetCardGame.swift
 //  SetCardGame
 //
-//  Created by Caleb Harris on 8/23/23.
+//  Created by Captain Harris on 8/23/23.
 //
 
 import Foundation
 
 struct SetCardGame {
-	private(set) var cards = [Card]()
+	private(set) var deckCards = [Card]()
 	private(set) var dealtCards = [Card]()
+	private(set) var disCards = [Card]()
 	
 	init() {
 		var id = 0
@@ -17,21 +18,18 @@ struct SetCardGame {
 			for number in Card.Feature.allCases {
 				for shape in Card.Feature.allCases {
 					for shading in Card.Feature.allCases {
-						cards.append(Card(color, number, shape, shading, id: id))
+						deckCards.append(Card(color, number, shape, shading, id: id))
 						id += 1
 					}
 				}
 			}
 		}
 		
-		cards.shuffle()
-		for _ in 0..<4 {
-			dealThree()
-		}
+		deckCards.shuffle()
 	}
 	
 	private func match(_ card1: Card, _ card2: Card, _ card3: Card) -> Bool {
-		var checks = [false, false, false, false]
+		var checks = [false, true, true, true]
 		if (card1.color == card2.color && card2.color == card3.color) ||
 			(card1.color != card2.color && card2.color != card3.color && card1.color != card3.color) {
 			checks[0] = true
@@ -57,8 +55,8 @@ struct SetCardGame {
 	
 	mutating func dealThree() {
 		for _ in 0..<3 {
-			if cards.count > 0 {
-				dealtCards.insert(cards.removeFirst(), at: 0)
+			if deckCards.count > 0 {
+				dealtCards.append(deckCards.removeFirst())
 			} else {
 				break
 			}
@@ -71,7 +69,17 @@ struct SetCardGame {
 			dealtCards.indices.forEach({dealtCards[$0].state = .noselect})
 			// if three are matched, remove the three
 		} else {
-			confirmMatch()
+			if dealtCards.filter({$0.state == .match}).count == 3 {
+				repeat {
+					if let next = dealtCards.indices.first(where: {dealtCards[$0].state == .match}) {
+						disCards.append(dealtCards.remove(at: next))
+					}
+				} while dealtCards.filter({$0.state == .match}).count > 0
+				
+				for index in disCards.indices {
+					disCards[index].state = .noselect
+				}
+			}
 		}
 		
 		select(card)
@@ -96,31 +104,28 @@ struct SetCardGame {
 		}
 	}
 	
-	mutating func confirmMatch(deal: Bool = true) {
-		if dealtCards.filter({$0.state == .match}).count == 3 {
-			dealtCards.removeAll(where: {$0.state == .match})
-			if deal {
-				dealThree()
-			}
-		}
-	}
-	
-	mutating func findMatch() {
-		for index in dealtCards.indices {
-			dealtCards[index].state = .noselect
-		}
-		
+	func findMatch() -> [Int]? {
 		for index1 in 0..<(dealtCards.count - 2) {
 			for index2 in (index1 + 1)..<(dealtCards.count - 1) {
 				for index3 in (index2 + 1)..<(dealtCards.count) {
 					if match(dealtCards[index1], dealtCards[index2], dealtCards[index3]) {
-						dealtCards[index1].state = .suggestion
-						dealtCards[index2].state = .suggestion
-						dealtCards[index3].state = .suggestion
-						return
+						return [index1, index2, index3]
 					}
 				}
 			}
+		}
+		return nil
+	}
+	
+	mutating func hint() {
+		for index in dealtCards.indices {
+			dealtCards[index].state = .noselect
+		}
+		
+		if let matches = findMatch() {
+			dealtCards[matches[0]].state = .suggestion
+			dealtCards[matches[1]].state = .suggestion
+			dealtCards[matches[2]].state = .suggestion
 		}
 	}
 	

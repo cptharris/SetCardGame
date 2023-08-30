@@ -13,6 +13,8 @@
 		E24C48D72A96A15000B261A9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E24C48D62A96A15000B261A9 /* Preview Assets.xcassets */; };
 		E24C48E02A96A71600B261A9 /* SetCardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48DF2A96A71600B261A9 /* SetCardGame.swift */; };
 		E24C48E22A96A98F00B261A9 /* SetCardGameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */; };
+		E2DA4EA82A9FB6A800453079 /* ViewAddons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA4EA72A9FB6A800453079 /* ViewAddons.swift */; };
+		E2DA4EAC2A9FBBB400453079 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA4EAB2A9FBBB400453079 /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +25,8 @@
 		E24C48D62A96A15000B261A9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E24C48DF2A96A71600B261A9 /* SetCardGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardGame.swift; sourceTree = "<group>"; };
 		E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardGameManager.swift; sourceTree = "<group>"; };
+		E2DA4EA72A9FB6A800453079 /* ViewAddons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAddons.swift; sourceTree = "<group>"; };
+		E2DA4EAB2A9FBBB400453079 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,8 @@
 			children = (
 				E24C48CF2A96A14E00B261A9 /* SetCardGameApp.swift */,
 				E24C48D12A96A14E00B261A9 /* SetCardGameView.swift */,
+				E2DA4EAB2A9FBBB400453079 /* CardView.swift */,
+				E2DA4EA72A9FB6A800453079 /* ViewAddons.swift */,
 				E24C48DF2A96A71600B261A9 /* SetCardGame.swift */,
 				E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */,
 				E24C48D32A96A15000B261A9 /* Assets.xcassets */,
@@ -147,6 +153,8 @@
 				E24C48D22A96A14E00B261A9 /* SetCardGameView.swift in Sources */,
 				E24C48D02A96A14E00B261A9 /* SetCardGameApp.swift in Sources */,
 				E24C48E22A96A98F00B261A9 /* SetCardGameManager.swift in Sources */,
+				E2DA4EAC2A9FBBB400453079 /* CardView.swift in Sources */,
+				E2DA4EA82A9FB6A800453079 /* ViewAddons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
