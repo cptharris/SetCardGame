@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SetCardGameView: View {
+	typealias Card = SetCardGame.Card
+	
 	@ObservedObject var gameKeeper = SetCardGameManager()
 	
 	@Namespace private var cardNamespace
@@ -17,9 +19,9 @@ struct SetCardGameView: View {
 			cardView
 			
 			bottomPanel
-				.padding(5)
+				.padding(Constants.inset)
 		}
-		.padding(5)
+		.padding(Constants.inset)
 	}
 	
 	private var bottomPanel: some View {
@@ -30,7 +32,9 @@ struct SetCardGameView: View {
 						Text("S").foregroundColor(.red)
 						Text("E").foregroundColor(.green)
 						Text("T").foregroundColor(.blue)
-					}.rotationEffect(.degrees(90)).font(.title)
+					}
+					.rotationEffect(.degrees(gameKeeper.deckCards.isEmpty ? 0 : 90))
+					.font(.title)
 				}
 				.onTapGesture {
 					withAnimation {
@@ -39,36 +43,45 @@ struct SetCardGameView: View {
 				}
 			Spacer()
 			gameMenu
+				.onAppear {
+					withAnimation {
+						for _ in 0..<4 {
+							gameKeeper.dealThree()
+						}
+					}
+				}
 			Spacer()
 			cardStackView(cardSet: gameKeeper.disCards, isFaceUp: true)
 		}
 	}
 	
 	private var gameMenu: some View {
-		Menu {
-			Section {
-				Button {
+		HStack {
+			Button {
+				withAnimation {
 					gameKeeper.hint()
-				} label: {
-					Label("Hint", systemImage: "questionmark.circle")
 				}
-				Button {
-					withAnimation {
-						gameKeeper.shuffle()
-					}
-				} label: {
-					Label("Shuffle", systemImage: "shuffle")
-				}
+			} label: {
+				Label("", systemImage: "questionmark.circle")
+					.foregroundColor(gameKeeper.matchExists ? .accentColor : .red)
+					.disabled(!gameKeeper.matchExists)
 			}
+			
+			Button {
+				withAnimation {
+					gameKeeper.shuffle()
+				}
+			} label: {
+				Label("", systemImage: "shuffle")
+			}
+			
 			Button {
 				withAnimation {
 					gameKeeper.newGame()
 				}
 			} label: {
-				Label("New Game", systemImage: "play.square.stack")
+				Label("", systemImage: "play.square.stack")
 			}
-		} label: {
-			Label("", systemImage: "square.and.pencil")
 		}
 	}
 	
@@ -93,7 +106,7 @@ struct SetCardGameView: View {
 			let gridItemWidth = max(gridItemWidthThatFits(
 				count: gameKeeper.dealtCards.count,
 				size: geometry.size,
-				atAspectRatio: Constants.cardAspectRatio), 70)
+				atAspectRatio: Constants.cardAspectRatio), Constants.minCardWidth)
 			
 			ScrollView {
 				LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemWidth), spacing: 0)], spacing: 0) {
@@ -131,6 +144,8 @@ struct SetCardGameView: View {
 		static let cardAspectRatio: CGFloat = 2/3
 		static let shapeAspectRatio: CGFloat = 2
 		static let miniCardWidth: CGFloat = 60
+		static let minCardWidth: CGFloat = 70
+		static let inset: CGFloat = 5
 	}
 }
 

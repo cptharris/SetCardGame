@@ -29,7 +29,7 @@ struct SetCardGame {
 	}
 	
 	private func match(_ card1: Card, _ card2: Card, _ card3: Card) -> Bool {
-		var checks = [false, true, true, true]
+		var checks = [false, false, false, false]
 		if (card1.color == card2.color && card2.color == card3.color) ||
 			(card1.color != card2.color && card2.color != card3.color && card1.color != card3.color) {
 			checks[0] = true
@@ -105,6 +105,10 @@ struct SetCardGame {
 	}
 	
 	func findMatch() -> [Int]? {
+		if dealtCards.count == 0 {
+			return nil
+		}
+		
 		for index1 in 0..<(dealtCards.count - 2) {
 			for index2 in (index1 + 1)..<(dealtCards.count - 1) {
 				for index3 in (index2 + 1)..<(dealtCards.count) {
@@ -132,33 +136,33 @@ struct SetCardGame {
 	mutating func shuffle() {
 		dealtCards.shuffle()
 	}
-}
-
-struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
-	var debugDescription: String {
-		return "[\(id): color \(color) number \(number) shape \(shape) shading \(shading) \(state)]"
-	}
 	
-	var id: Int
-	let color: Feature
-	let number: Feature
-	let shape: Feature
-	let shading: Feature
-	var state: State = .noselect
-	
-	init(_ color: Feature, _ number: Feature, _ shape: Feature, _ shading: Feature, id: Int) {
-		self.color = color
-		self.number = number
-		self.shape = shape
-		self.shading = shading
-		self.id = id
-	}
-	
-	enum State {
-		case match, nomatch, select, noselect, suggestion
-	}
-	
-	enum Feature: Int, CaseIterable {
-		case one = 1, two = 2, three = 3
+	struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
+		var debugDescription: String {
+			return "[\(id): color \(color) number \(number) shape \(shape) shading \(shading) \(state)]"
+		}
+		
+		var id: Int
+		let color: Feature
+		let number: Feature
+		let shape: Feature
+		let shading: Feature
+		var state: State = .noselect
+		
+		init(_ color: Feature, _ number: Feature, _ shape: Feature, _ shading: Feature, id: Int) {
+			self.color = color
+			self.number = number
+			self.shape = shape
+			self.shading = shading
+			self.id = id
+		}
+		
+		enum State {
+			case match, nomatch, select, noselect, suggestion
+		}
+		
+		enum Feature: Int, CaseIterable {
+			case one = 1, two = 2, three = 3
+		}
 	}
 }

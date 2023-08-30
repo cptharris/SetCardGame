@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 class SetCardGameManager: ObservableObject {
+	typealias Card = SetCardGame.Card
 	@Published private var game = SetCardGame()
 	
 	var deckCards: [Card] {
@@ -33,6 +34,9 @@ class SetCardGameManager: ObservableObject {
 	
 	func newGame() {
 		game = SetCardGame()
+		for _ in 0..<4 {
+			dealThree()
+		}
 	}
 	
 	func hint() {

@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Draw a card.
 struct CardView: View {
+	typealias Card = SetCardGame.Card
+	
 	let card: Card
 	let isFaceUp: Bool
 	
@@ -18,20 +20,24 @@ struct CardView: View {
 	}
 	
 	var body: some View {
-		GeometryReader {geometry in
-			ZStack {
-				getCardWithShading()
-				if isFaceUp {
-					let shapes = getShape()
-						.aspectRatio(Constants.shapeAspectRatio, contentMode: .fit)
-						.frame(height: (geometry.size.width * Constants.cardAspectRatio) / 3)
-						.foregroundColor(getColor())
-					VStack {
-						ForEach(0..<card.number.rawValue, id: \.self) {_ in
-							shapes
+		Group {
+			if isFaceUp {
+				GeometryReader {geometry in
+					ZStack {
+						getCardWithShading()
+						let shapes = getShape()
+							.aspectRatio(Constants.shapeAspectRatio, contentMode: .fit)
+							.frame(height: (geometry.size.width * Constants.cardAspectRatio) / 3)
+							.foregroundColor(getColor())
+						VStack {
+							ForEach(0..<card.number.rawValue, id: \.self) {_ in
+								shapes
+							}
 						}
 					}
 				}
+			} else {
+				Constants.base
 			}
 		}
 		.aspectRatio(Constants.cardAspectRatio, contentMode: .fit)
@@ -54,7 +60,7 @@ struct CardView: View {
 	}
 	
 	@ViewBuilder func getCardWithShading() -> some View {
-		let base = RoundedRectangle(cornerRadius: 10)
+		let base = Constants.base
 		let baseBorder = base
 			.strokeBorder(lineWidth: Constants.cardBorder)
 			.foregroundColor(strokeColor())
@@ -91,10 +97,14 @@ struct CardView: View {
 		static let cardAspectRatio: CGFloat = 2/3
 		static let shapeAspectRatio: CGFloat = 2
 		static let cardBorder: CGFloat = 5
+		static let cornerRadius: CGFloat = 10
+		static let base = RoundedRectangle(cornerRadius: cornerRadius)
 	}
 }
 
 struct CardView_Previews: PreviewProvider {
+	typealias Card = CardView.Card
+	
 	static var previews: some View {
 		VStack {
 			HStack {
