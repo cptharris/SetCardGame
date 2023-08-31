@@ -10,7 +10,7 @@ import SwiftUI
 struct SetCardGameView: View {
 	typealias Card = SetCardGame.Card
 	
-	@ObservedObject var gameKeeper = SetCardGameManager()
+	@ObservedObject var gameKeeper: SetCardGameManager
 	
 	@Namespace private var cardNamespace
 	
@@ -22,6 +22,11 @@ struct SetCardGameView: View {
 				.padding(Constants.inset)
 		}
 		.padding(Constants.inset)
+		.onAppear {
+			withAnimation(Constants.halfSpeed.delay(1)) {
+				gameKeeper.startingDeal()
+			}
+		}
 	}
 	
 	private var bottomPanel: some View {
@@ -37,19 +42,12 @@ struct SetCardGameView: View {
 					.font(.title)
 				}
 				.onTapGesture {
-					withAnimation {
+					withAnimation(Constants.halfSpeed) {
 						gameKeeper.dealThree()
 					}
 				}
 			Spacer()
 			gameMenu
-				.onAppear {
-					withAnimation {
-						for _ in 0..<4 {
-							gameKeeper.dealThree()
-						}
-					}
-				}
 			Spacer()
 			cardStackView(cardSet: gameKeeper.disCards, isFaceUp: true)
 		}
@@ -68,7 +66,7 @@ struct SetCardGameView: View {
 			}
 			
 			Button {
-				withAnimation {
+				withAnimation(Constants.halfSpeed) {
 					gameKeeper.shuffle()
 				}
 			} label: {
@@ -76,8 +74,14 @@ struct SetCardGameView: View {
 			}
 			
 			Button {
-				withAnimation {
-					gameKeeper.newGame()
+				for i in 0...1 {
+					withAnimation(Constants.halfSpeed.delay(Double(i))) {
+						if i == 0 {
+							gameKeeper.newGame()
+						} else {
+							gameKeeper.startingDeal()
+						}
+					}
 				}
 			} label: {
 				Label("", systemImage: "play.square.stack")
@@ -95,6 +99,8 @@ struct SetCardGameView: View {
 		ZStack {
 			ForEach(cardSet) { card in
 				CardViewEffect(card, isFaceUp: isFaceUp)
+					.offset(card.offset)
+					.rotationEffect(Angle(degrees: card.rot))
 			}
 		}
 		.frame(width: Constants.miniCardWidth, height: Constants.miniCardWidth / Constants.cardAspectRatio)
@@ -114,7 +120,7 @@ struct SetCardGameView: View {
 						CardViewEffect(card)
 							.padding(2)
 							.onTapGesture {
-								withAnimation {
+								withAnimation(Constants.halfSpeed) {
 									gameKeeper.choose(card)
 								}
 							}
@@ -146,11 +152,12 @@ struct SetCardGameView: View {
 		static let miniCardWidth: CGFloat = 60
 		static let minCardWidth: CGFloat = 70
 		static let inset: CGFloat = 5
+		static let halfSpeed: Animation = .default.speed(0.5)
 	}
 }
 
 struct SetCardGameView_Previews: PreviewProvider {
 	static var previews: some View {
-		SetCardGameView()
+		SetCardGameView(gameKeeper: SetCardGameManager())
 	}
 }

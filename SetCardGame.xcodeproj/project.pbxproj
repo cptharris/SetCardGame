@@ -59,12 +59,12 @@
 		E24C48CE2A96A14E00B261A9 /* SetCardGame */ = {
 			isa = PBXGroup;
 			children = (
-				E24C48CF2A96A14E00B261A9 /* SetCardGameApp.swift */,
 				E24C48D12A96A14E00B261A9 /* SetCardGameView.swift */,
+				E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */,
+				E24C48DF2A96A71600B261A9 /* SetCardGame.swift */,
+				E24C48CF2A96A14E00B261A9 /* SetCardGameApp.swift */,
 				E2DA4EAB2A9FBBB400453079 /* CardView.swift */,
 				E2DA4EA72A9FB6A800453079 /* ViewAddons.swift */,
-				E24C48DF2A96A71600B261A9 /* SetCardGame.swift */,
-				E24C48E12A96A98F00B261A9 /* SetCardGameManager.swift */,
 				E24C48D32A96A15000B261A9 /* Assets.xcassets */,
 				E24C48D52A96A15000B261A9 /* Preview Content */,
 			);

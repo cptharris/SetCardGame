@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct SetCardGameApp: App {
+	@StateObject var gameKeeper = SetCardGameManager()
 	var body: some Scene {
 		WindowGroup {
-			SetCardGameView()
+			SetCardGameView(gameKeeper: gameKeeper)
 		}
 	}
 }

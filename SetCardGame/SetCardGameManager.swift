@@ -34,6 +34,9 @@ class SetCardGameManager: ObservableObject {
 	
 	func newGame() {
 		game = SetCardGame()
+	}
+	
+	func startingDeal() {
 		for _ in 0..<4 {
 			dealThree()
 		}

@@ -11,6 +11,8 @@ import SwiftUI
 struct CardView: View {
 	typealias Card = SetCardGame.Card
 	
+	@Environment(\.colorScheme) var colorScheme
+	
 	let card: Card
 	let isFaceUp: Bool
 	
@@ -89,7 +91,7 @@ struct CardView: View {
 		case .nomatch: return Color.red
 		case .select: return Color.yellow
 		case .suggestion: return Color.blue
-		default: return Color.black
+		default: return colorScheme == .light ? Color.black : Color.white
 		}
 	}
 	

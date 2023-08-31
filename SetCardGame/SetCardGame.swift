@@ -164,5 +164,9 @@ struct SetCardGame {
 		enum Feature: Int, CaseIterable {
 			case one = 1, two = 2, three = 3
 		}
+		
+		private static let randBound = -5.0...5.0
+		let offset = CGSize(width: Double.random(in: randBound), height: Double.random(in: randBound))
+		let rot = Double.random(in: randBound)
 	}
 }
