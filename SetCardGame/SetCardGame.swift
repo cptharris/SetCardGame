@@ -122,14 +122,20 @@ struct SetCardGame {
 	}
 	
 	mutating func hint() {
-		for index in dealtCards.indices {
-			dealtCards[index].state = .noselect
-		}
-		
 		if let matches = findMatch() {
+			let oldStates = [dealtCards[matches[0]].state, dealtCards[matches[1]].state, dealtCards[matches[2]].state]
+			
+			for index in dealtCards.indices {
+				dealtCards[index].state = .noselect
+			}
+			
 			dealtCards[matches[0]].state = .suggestion
-			dealtCards[matches[1]].state = .suggestion
-			dealtCards[matches[2]].state = .suggestion
+			if oldStates[0] == .suggestion {
+				dealtCards[matches[1]].state = .suggestion
+				if oldStates[1] == .suggestion {
+					dealtCards[matches[2]].state = .suggestion
+				}
+			}
 		}
 	}
 	

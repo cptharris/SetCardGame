@@ -30,7 +30,7 @@ struct SetCardGameView: View {
 	}
 	
 	private var bottomPanel: some View {
-		HStack {
+		HStack(spacing: 0) {
 			cardStackView(cardSet: gameKeeper.deckCards, isFaceUp: false)
 				.overlay {
 					HStack(spacing: 2) {
@@ -48,13 +48,15 @@ struct SetCardGameView: View {
 				}
 			Spacer()
 			gameMenu
+				.buttonStyle(.plain)
+				.foregroundColor(.accentColor)
 			Spacer()
 			cardStackView(cardSet: gameKeeper.disCards, isFaceUp: true)
 		}
 	}
 	
 	private var gameMenu: some View {
-		HStack {
+		HStack(spacing: 15) {
 			Button {
 				withAnimation {
 					gameKeeper.hint()
@@ -104,6 +106,7 @@ struct SetCardGameView: View {
 			}
 		}
 		.frame(width: Constants.miniCardWidth, height: Constants.miniCardWidth / Constants.cardAspectRatio)
+		.padding(Constants.inset)
 	}
 	
 	/// Draw all the dealt cards

@@ -1,11 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-  <rect width="1024" height="1024" fill="#fff" rx="0" ry="0"/>
-  <g transform="rotate(15 15 1532)">
-    <rect width="500" height="750" x="30" y="30" fill="none" stroke="#000" stroke-width="20" rx="40.3" ry="40.3"/>
-    <ellipse cx="280" cy="405" fill="#0f0" rx="200" ry="100"/>
-    <rect width="223.6" height="223.6" x="742" y="429" fill="#00f" rx="0" ry="0" transform="scale(1.26 .63) rotate(45)"/>
-    <path fill="red" d="M80 86h400v200H80z"/>
+  <defs>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="gray"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#a)" rx="0" ry="0" transform="rotate(270 512 512)"/>
+  <g transform="matrix(1.1 0 0 1.1 -54 -53)">
+    <g transform="rotate(15 15 1532)">
+      <rect width="500" height="750" x="30" y="30" stroke="#000" stroke-width="20" rx="40.3" ry="40.3"/>
+      <ellipse cx="280" cy="405" fill="#0f0" rx="200" ry="100"/>
+      <rect width="223.6" height="223.6" x="742" y="429" fill="#00f" rx="0" ry="0" transform="scale(1.26 .63) rotate(45)"/>
+      <path fill="red" d="M80 86h400v200H80Z"/>
+    </g>
+    <rect width="500" height="750" x="30" y="30" fill="#fff" stroke="#000" stroke-width="20" rx="40.3" ry="40.3" transform="translate(103 107)"/>
+    <text xml:space="preserve" x="499" y="-254" fill="red" stroke="red" stroke-width="20" font-family="Monospace" font-size="373.3" font-weight="400" style="-inkscape-font-specification:&quot;Monospace, Normal&quot;;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center" text-anchor="middle" transform="rotate(90)"><tspan x="499" y="-254">S<tspan fill="#0f0" stroke="#0f0">E</tspan><tspan fill="#00f" stroke="#00f">T</tspan></tspan></text>
   </g>
-  <rect width="500" height="750" x="30" y="30" stroke="#000" stroke-width="20" rx="40.3" ry="40.3" transform="translate(103 107)"/>
-  <text xml:space="preserve" x="504" y="-291" fill="red" stroke="red" stroke-width="20" font-family="Monospace" font-size="266.7" font-weight="400" style="-inkscape-font-specification:&quot;Monospace, Normal&quot;;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center" text-anchor="middle" transform="rotate(90)"><tspan x="504" y="-291">S<tspan fill="#0f0" stroke="#0f0">E</tspan><tspan fill="#00f" stroke="#00f">T</tspan></tspan></text>
 </svg>
